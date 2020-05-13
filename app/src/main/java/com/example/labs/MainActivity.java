@@ -192,12 +192,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             switch (event.getAction()) {
                 case (MotionEvent.ACTION_DOWN):
                     btn.setBackgroundColor(Color.RED);
+                    btn.setText("DOWN");
                     return true;
                 case (MotionEvent.ACTION_UP):
                     btn.setBackgroundColor(Color.GREEN);
+                    btn.setText("UP");
                     return true;
                 case (MotionEvent.ACTION_MOVE):
                     btn.setBackgroundColor(Color.YELLOW);
+                    btn.setText("MOVE");
                     return true;
                 default:
                     return super.onTouchEvent(event); // always do this!
@@ -211,11 +214,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         switch (keyCode) {
             case KeyEvent.KEYCODE_VOLUME_UP:
-                hsv[2] = hsv[2] + 0.1f;
+                if(hsv[2]<1){
+                    hsv[2] = hsv[2] + 0.1f;
+                }
                 layout.setBackgroundColor(Color.HSVToColor(hsv));
                 return false;
             case KeyEvent.KEYCODE_VOLUME_DOWN:
-                hsv[2] = hsv[2] - 0.1f;
+                if(hsv[2]>0){
+                    hsv[2] = hsv[2] - 0.1f;
+                }
                 layout.setBackgroundColor(Color.HSVToColor(hsv));
                 return false;
             default:
