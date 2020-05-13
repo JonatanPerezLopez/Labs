@@ -1,5 +1,6 @@
 package com.example.labs;
 
+import android.annotation.SuppressLint;
 import android.app.ActionBar;
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -11,6 +12,7 @@ import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Layout;
+import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.animation.Animation;
@@ -20,7 +22,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class MainActivity extends AppCompatActivity implements View.OnClickListener {
+public class MainActivity extends AppCompatActivity implements View.OnClickListener, View.OnTouchListener {
     //Variables
     float[] hsv = new float[3];
     private static int SPLASH_DURATION = 5000;//splash screen time
@@ -30,7 +32,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     ConstraintLayout layout;
     Activity activity = (this);
 
-    Button btn1,btn2,btn3, btn4;
+    Button btn1, btn2, btn3, btn4;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,6 +62,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 layout = findViewById(R.id.layout_second);
                 Button btn1 = findViewById(R.id.button_1);
                 btn1.setOnClickListener(MainActivity.this);
+                btn1.setOnTouchListener(MainActivity.this);
                 Button btn2 = findViewById(R.id.button_2);
                 btn2.setOnClickListener(MainActivity.this);
                 Button btn3 = findViewById(R.id.button_3);
@@ -79,7 +82,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                             public void onClick(DialogInterface dialogInterface, int i) {
                                 finish();
                                 System.exit(0);
-                            };
+                            }
+
+                            ;
 
                         });
                         builder.setNegativeButton("Not now", new DialogInterface.OnClickListener() {
@@ -130,6 +135,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
                         | View.SYSTEM_UI_FLAG_FULLSCREEN);
     }
+
     // Shows the navigation bar
     private void showSystemUI() {
         View decorView = getWindow().getDecorView();
@@ -142,21 +148,78 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         Button btn = findViewById(R.id.button_1);
-        switch(event.getAction()) {
-            case(MotionEvent.ACTION_DOWN) : btn.setText("DOWN"); return true;
-            case(MotionEvent.ACTION_UP) : btn.setText("UP"); return true;
-            case(MotionEvent.ACTION_MOVE) : btn.setText("MOVE"); changeBackgroundColour(event); return true;
-            default: return super.onTouchEvent(event); // always do this!
+        switch (event.getAction()) {
+            case (MotionEvent.ACTION_DOWN):
+                btn.setText("DOWN");
+                return true;
+            case (MotionEvent.ACTION_UP):
+                btn.setText("UP");
+                return true;
+            case (MotionEvent.ACTION_MOVE):
+                btn.setText("MOVE");
+                changeBackgroundColour(event);
+                return true;
+            default:
+                return super.onTouchEvent(event); // always do this!
         }
     }
 
     public void onClick(View v) {
-        switch(v.getId()){
-            case R.id.button_1: Toast.makeText(getApplicationContext(), "Button 1", Toast.LENGTH_SHORT).show(); break;
-            case R.id.button_2: Toast.makeText(getApplicationContext(), "Button 2", Toast.LENGTH_SHORT).show(); break;
-            case R.id.button_3: Toast.makeText(getApplicationContext(), "Button 3", Toast.LENGTH_SHORT).show(); break;
-            case R.id.button_4: Toast.makeText(getApplicationContext(), "Button 4", Toast.LENGTH_SHORT).show(); break;
-            default: Toast.makeText(getApplicationContext(), "Something went wrong", Toast.LENGTH_SHORT).show(); break;
+        switch (v.getId()) {
+            case R.id.button_1:
+                Toast.makeText(getApplicationContext(), "Button 1", Toast.LENGTH_SHORT).show();
+                break;
+            case R.id.button_2:
+                Toast.makeText(getApplicationContext(), "Button 2", Toast.LENGTH_SHORT).show();
+                break;
+            case R.id.button_3:
+                Toast.makeText(getApplicationContext(), "Button 3", Toast.LENGTH_SHORT).show();
+                break;
+            case R.id.button_4:
+                Toast.makeText(getApplicationContext(), "Button 4", Toast.LENGTH_SHORT).show();
+                break;
+            default:
+                Toast.makeText(getApplicationContext(), "Something went wrong", Toast.LENGTH_SHORT).show();
+                break;
+        }
+    }
+
+
+    @Override
+    public boolean onTouch(View v, MotionEvent event) {
+        Button btn = findViewById(R.id.button_1);
+        if (v.getId() == R.id.button_1) {
+            switch (event.getAction()) {
+                case (MotionEvent.ACTION_DOWN):
+                    btn.setBackgroundColor(Color.RED);
+                    return true;
+                case (MotionEvent.ACTION_UP):
+                    btn.setBackgroundColor(Color.GREEN);
+                    return true;
+                case (MotionEvent.ACTION_MOVE):
+                    btn.setBackgroundColor(Color.YELLOW);
+                    return true;
+                default:
+                    return super.onTouchEvent(event); // always do this!
+            }
+        } else {
+            return true;
+        }
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        switch (keyCode) {
+            case KeyEvent.KEYCODE_VOLUME_UP:
+                hsv[2] = hsv[2] + 0.1f;
+                layout.setBackgroundColor(Color.HSVToColor(hsv));
+                return false;
+            case KeyEvent.KEYCODE_VOLUME_DOWN:
+                hsv[2] = hsv[2] - 0.1f;
+                layout.setBackgroundColor(Color.HSVToColor(hsv));
+                return false;
+            default:
+                return false; // don’t block default behaviour by default!
         }
     }
 }
