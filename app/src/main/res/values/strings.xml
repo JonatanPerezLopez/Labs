@@ -6,4 +6,5 @@
     <string name="action_3">Action 3</string>
     <string name="action_1">Action 1</string>
     <string name="troll_request">TROLL REQUEST</string>
+    <string name="exit">Exit</string>
 </resources>

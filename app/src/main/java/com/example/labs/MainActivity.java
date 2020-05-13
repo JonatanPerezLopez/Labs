@@ -6,6 +6,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.graphics.Color;
 import android.os.Handler;
 import android.support.constraint.ConstraintLayout;
@@ -228,6 +229,75 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             default:
                 return false; // don’t block default behaviour by default!
         }
+    }
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        if (getResources().getConfiguration().orientation ==
+                Configuration.ORIENTATION_PORTRAIT) {
+            setContentView(R.layout.second);
+        } else {
+            setContentView(R.layout.second);
+        }
+        layout = findViewById(R.id.layout_second);
+        layout.setBackgroundColor(Color.HSVToColor(hsv));
+        Button btn1 = findViewById(R.id.button_1);
+        btn1.setOnClickListener(MainActivity.this);
+        btn1.setOnTouchListener(MainActivity.this);
+        Button btn2 = findViewById(R.id.button_2);
+        btn2.setOnClickListener(MainActivity.this);
+        Button btn3 = findViewById(R.id.button_3);
+        btn3.setOnClickListener(MainActivity.this);
+        Button btn4 = findViewById(R.id.button_4);
+        btn4.setOnClickListener(MainActivity.this);
+        Button btnexit = findViewById(R.id.button_exit);
+        btnexit.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                final AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+                builder.setTitle("Exit");
+                builder.setMessage("Do you want to exit ??");
+                builder.setPositiveButton("Yes. Exit now!", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        finish();
+                        System.exit(0);
+                    }
+
+                    ;
+
+                });
+                builder.setNegativeButton("Not now", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+
+                        dialogInterface.dismiss();
+                        hideSystemUI();
+                    }
+                });
+
+
+                AlertDialog dialog = builder.create();
+                dialog.show();
+
+            }
+        });
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+
+        outState.putFloatArray("hsv",hsv);
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+
+        hsv = savedInstanceState.getFloatArray("hsv");
+
     }
 }
 
