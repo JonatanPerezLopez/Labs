@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Handler;
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -86,6 +87,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                             public void onClick(DialogInterface dialogInterface, int i) {
 
                                 dialogInterface.dismiss();
+                                hideSystemUI();
                             }
                         });
 
@@ -102,16 +104,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     }
 
-   /* public void myHandlerName(View v){
-        switch(v.getId()){
-            case R.id.button_1: Toast.makeText(getApplicationContext(), "Button 1", Toast.LENGTH_SHORT).show(); break;
-            case R.id.button_2: Toast.makeText(getApplicationContext(), "Button 2", Toast.LENGTH_SHORT).show(); break;
-            case R.id.button_3: Toast.makeText(getApplicationContext(), "Button 3", Toast.LENGTH_SHORT).show(); break;
-            case R.id.button_4: Toast.makeText(getApplicationContext(), "Button 4", Toast.LENGTH_SHORT).show(); break;
-            default: Toast.makeText(getApplicationContext(), "Something went wrong", Toast.LENGTH_SHORT).show(); break;
-        }
-    }*/
-
     public void changeBackgroundColour(MotionEvent event) {
         float eventX = event.getX();
         float eventY = event.getY();
@@ -119,6 +111,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         float width = layout.getWidth();
         hsv[0] = eventY / height * 360; // (0 to 360)
         hsv[1] = eventX / width + 0.1f; // (0.1 to 1)
+        layout.setBackgroundColor(Color.HSVToColor(hsv));
     }
 
     private void hideSystemUI() {
@@ -152,7 +145,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         switch(event.getAction()) {
             case(MotionEvent.ACTION_DOWN) : btn.setText("DOWN"); return true;
             case(MotionEvent.ACTION_UP) : btn.setText("UP"); return true;
-            case(MotionEvent.ACTION_MOVE) : btn.setText("MOVE"); return true;
+            case(MotionEvent.ACTION_MOVE) : btn.setText("MOVE"); changeBackgroundColour(event); return true;
             default: return super.onTouchEvent(event); // always do this!
         }
     }
