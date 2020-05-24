@@ -158,7 +158,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 return true;
             case (MotionEvent.ACTION_MOVE):
                 btn.setText("MOVE");
-                changeBackgroundColour(event);
+                changeBackgroundColour(event);//
                 return true;
             default:
                 return super.onTouchEvent(event); // always do this!
